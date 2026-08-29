@@ -1,0 +1,66 @@
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap");
+@import "tailwindcss";
+
+@theme {
+  --font-display: "Fraunces", ui-serif, Georgia, serif;
+  --font-body: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+
+  --color-ink: #12213a;
+  --color-ink-soft: #1c2c48;
+  --color-paper: #f6f3ec;
+  --color-paper-dim: #ece7da;
+  --color-amber: #d98e2b;
+  --color-amber-soft: #f2c979;
+  --color-verified: #2f7b4f;
+  --color-verified-soft: #e3efe6;
+  --color-alert: #c23b33;
+  --color-alert-soft: #f6e3e1;
+  --color-slate: #5b6672;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--color-ink);
+  color: var(--color-paper);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Perforated "tear strip" edge, used at the top of ID-badge cards */
+.badge-perf {
+  height: 14px;
+  background-image: radial-gradient(circle, var(--color-ink) 3.5px, transparent 3.6px);
+  background-size: 16px 16px;
+  background-position: 8px center;
+}
+
+.badge-perf-light {
+  background-image: radial-gradient(circle, var(--color-paper) 3.5px, transparent 3.6px);
+}
+
+/* Rubber-stamp style verdict mark */
+.stamp {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  border: 3px solid currentColor;
+  border-radius: 8px;
+  padding: 0.25em 0.75em;
+  transform: rotate(-4deg);
+  font-family: var(--font-mono);
+  letter-spacing: 0.08em;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
