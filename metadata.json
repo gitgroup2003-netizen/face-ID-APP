@@ -1,0 +1,8 @@
+{
+  "name": "GIT GROUP",
+  "description": "Matches a photo of a person arriving to pick up a child against the guardian photos a school has on file, so security can verify pickups at the gate.",
+  "requestFramePermissions": [
+    "camera"
+  ],
+  "majorCapabilities": []
+}
