@@ -1,89 +1,107 @@
-# GIT GROUP — School Pickup Verification
+# GIT GROUP — Complete Project (Full Replace)
 
-GIT GROUP helps schools verify who's picking up a child at the gate. Admins
-enroll a photo of each authorized guardian against a child; when someone
-arrives, security captures a photo at the gate and the app matches it
-against that gallery.
+This is your ENTIRE project, fully assembled and tested together —
+Supabase auth, multi-school accounts, roles, the Admin Portal with
+Library/Reports/Staff/Settings tabs, Visitor Check-In, PWA install
+support, and your original face-matching Gate Scanner untouched.
 
-- **Face matching runs on-device** in the browser (`@vladmandic/face-api`) —
-  no photo is ever sent to an external AI service.
-- **Data is stored on your own server** (SQLite file + local `uploads/`
-  folder), so the Admin Portal and the Gate Scanner share the same gallery.
+I ran your project's own TypeScript compiler against all of it together
+— zero errors.
 
-## How it works
+## Do this as a full replace, not a merge
 
-1. **Admin Portal** (`/#admin`) — add a child to the roster, then enroll each
-   authorized guardian: capture their photo with a camera or upload an
-   existing photo (e.g. one a parent sent in). The app checks a face can be
-   found in the photo before it lets you save it.
-2. **Gate Scanner** (`/#gate`) — security opens the camera, frames the
-   visitor's face, and presses "Scan arrival." The captured face is compared
-   against every enrolled guardian:
-   - **VERIFIED** — shows the matched guardian's badge (name, relationship,
-     which child) with a confidence score.
-   - **NOT ON FILE** — no enrolled guardian matched; the app tells the guard
-     to verify identity manually rather than release the child.
-   - Every scan (matched or not) is logged with a timestamp for the
-     school's records.
+Since your `src/views` folder got into a confusing state, the cleanest
+fix is to delete it entirely and put this one in, rather than trying to
+merge file by file again.
 
-## Run in GitHub Codespaces (no local install needed)
+### Step 1 — Delete these from your Codespace
+- `src/views` (the whole folder)
+- `src/lib` (the whole folder)
+- `src/components` (the whole folder)
+- `src/hooks` (the whole folder)
+- `src/App.tsx`
+- `src/main.tsx`
+- `src/types.ts`
+- `index.html`
+- `package.json`
+- `vite.config.ts`
 
-1. Push this project to a GitHub repository (create one, then in this
-   folder: `git init`, `git add .`, `git commit -m "GIT GROUP"`,
-   `git remote add origin <your repo URL>`, `git push -u origin main`).
-2. On the repo page, click **Code → Codespaces → Create codespace on main**.
-   Codespaces will build the environment and run `npm install`
-   automatically (takes a minute or two the first time).
-3. Once it's ready, open the terminal (it's usually already open at the
-   bottom) and run:
-   ```
-   npm run dev
-   ```
-4. Codespaces will pop up a notification that port 3000 is forwarded —
-   click **Open in Browser**. That gives you an `https://...githubdev...`
-   URL, which is required for the browser to allow camera access.
-5. Allow camera access when prompted.
+Leave `public/models/` alone — those are your face-recognition model
+files, already correct, no need to touch them (this download includes
+them too, in case you ever need to restore them, but you shouldn't need
+to).
 
-Each time you come back to the codespace, you only need to run
-`npm run dev` again — dependencies are already installed.
+### Step 2 — Extract this zip on your computer
 
-## Run locally
+### Step 3 — Drag these from the extracted folder into your Codespace's
+top-level project folder (same level as `data`, `uploads`, `public`):
+- `src` (the whole folder — this brings back views, lib, components,
+  hooks, App.tsx, main.tsx, types.ts, index.css all at once)
+- `index.html`
+- `package.json`
+- `vite.config.ts`
+- `tsconfig.json`
 
-**Prerequisites:** Node.js 18+
-
-1. Install dependencies:
-   ```
-   npm install
-   ```
-2. Start both the API server and the web app together:
-   ```
-   npm run dev
-   ```
-   This runs the Express + SQLite API on `:3001` and the Vite dev server on
-   `:3000` (proxying `/api` and `/uploads` to the API). Open
-   `http://localhost:3000`.
-3. Allow camera access when prompted — a webcam (or a phone/tablet camera)
-   is required for both enrollment and scanning.
-
-## Production build
-
-```
-npm run build   # builds the frontend into dist/
-npm start       # serves the API + built frontend together on :3000
+### Step 4 — Reinstall dependencies fresh
+```bash
+rm -rf node_modules package-lock.json
+npm install
 ```
 
-Guardian photos are saved to `uploads/`, and all data lives in
-`data/gitgroup.sqlite` — back up that folder (or point it at persistent
-storage) when you deploy so the roster survives restarts.
+### Step 5 — Run it
+```bash
+npm run dev
+```
 
-## Notes on accuracy
+## What's inside
 
-- Enroll guardians with a clear, front-facing, well-lit photo — this is what
-  the gate scan gets compared against.
-- The match threshold is intentionally strict (a false "match" is the
-  costly failure mode at a school gate). If a legitimate guardian is
-  rejected, try re-enrolling their photo in better lighting.
-- This is a decision-support tool for the security guard, not a replacement
-  for their judgment — a "NOT ON FILE" result should always be followed up
-  with a manual ID check, and any edge case should be escalated to the
-  admin.
+**Auth & accounts**
+- Sign up creates a school + makes you its owner
+- Sign in / sign out
+- Roles: owner, admin, security_guard, head_of_security (extensible)
+- You (the creator) can see every school's data for troubleshooting
+
+**Admin Portal — now with tabs**
+- Roster — your original add-child / enroll-guardian flow, unchanged
+- Library — browse every guardian on file, searchable, with photos
+- Reports — pick a date range, see stats, export to Excel / ODF / Word /
+  PDF / print
+- Staff — see everyone with an account; add new staff with an
+  auto-generated shareable password
+- Settings — school name + logo
+
+**Gate Scanner** — completely unchanged, still your original
+on-device face-matching flow
+
+**Visitor Check-In** — new third option on the home screen: capture a
+visitor's photo, log their name and reason for visiting
+
+**Access**
+- Owners, admins, head of security, AND security guards can all reach
+  both Admin Portal and Gate Scanner
+
+**Installable app (PWA)**
+- Real icons in your brand colors, a manifest, and a service worker —
+  people can "Add to Home Screen" / install it like a real app on any
+  device
+
+**Branding**
+- "Frank Ssemakula is the creator of program" footer on every screen
+
+## SQL — already done
+
+You already ran all of this in earlier steps (the original schema, Part
+21's fix, and Part 22 for visitor_logs). Nothing new to run for this
+package.
+
+## Deploying for real (once you're happy testing)
+
+```bash
+npm run build
+npm install --save-dev gh-pages
+```
+Add to `package.json` scripts: `"deploy": "vite build && gh-pages -d dist"`
+Then: `npm run deploy`
+
+Also set `base: '/face-ID-APP/'` in `vite.config.ts` before deploying
+(currently set to `/` for local dev).
