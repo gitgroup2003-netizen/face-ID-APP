@@ -1,8 +1,8 @@
 // Minimal service worker: just enough to make the app installable and to
 // let the app shell load if the network is briefly unavailable. It does
 // NOT try to cache/serve Supabase API calls — those always go live.
-const CACHE_NAME = 'gitgroup-shell-v1';
-const SHELL_FILES = ['/', '/index.html', '/manifest.json'];
+const CACHE_NAME = 'gitgroup-shell-v2';
+const SHELL_FILES = ['/face-ID-APP/', '/face-ID-APP/index.html', '/face-ID-APP/manifest.json'];
 
 self.addEventListener('install', (event) => {
   event.waitUntil(caches.open(CACHE_NAME).then((cache) => cache.addAll(SHELL_FILES)));
@@ -24,6 +24,6 @@ self.addEventListener('fetch', (event) => {
   if (url.origin !== self.location.origin) return;
 
   event.respondWith(
-    caches.match(event.request).then((cached) => cached || fetch(event.request).catch(() => caches.match('/index.html')))
+    caches.match(event.request).then((cached) => cached || fetch(event.request).catch(() => caches.match('/face-ID-APP/index.html')))
   );
 });
